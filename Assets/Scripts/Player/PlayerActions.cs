@@ -16,11 +16,14 @@ public class PlayerActions : MonoBehaviour
     private Vector3 rotation = Vector3.zero;
     private float xRotation;
 
+    private bool isSprinting;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -36,6 +39,7 @@ public class PlayerActions : MonoBehaviour
 
         //apply movement based on current player rotation
         Vector3 moveDirection = (transform.forward * movement.z) + (transform.right * movement.x);
+        if (isSprinting) moveDirection *= speedMultiplyer;
         controller.Move(((moveDirection * moveSpeed) + velocity) * Time.deltaTime);
     }
 
@@ -49,8 +53,11 @@ public class PlayerActions : MonoBehaviour
 
     public void UpdateMovementInput(Vector2 input)
     {
+        Debug.Log($"movement: {input}");
         movement = new Vector3(input.x, 0, input.y);
     }
+
+    public void IsSprinting(bool isSprinting) => this.isSprinting = isSprinting;
 
     private void HandleRotation()
     {
@@ -64,11 +71,12 @@ public class PlayerActions : MonoBehaviour
         GetComponentInChildren<Camera>().transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         //this.transform.Rotate(0f, lookX, 0f);
         Quaternion deltaRotation = Quaternion.Euler(new Vector3(0f, lookX, 0f));
-        transform.rotation *= deltaRotation;
+        this.transform.rotation *= deltaRotation;
     }
 
     public void UpdateRotationInput(Vector2 input)
     {
+        Debug.Log($"rotation: {input}");
         rotation = input;   
     }
 }

@@ -3,26 +3,31 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    private PlayerActions actions;
+    [SerializeField] private PlayerActions actions;
+
+    public Vector2 move;
+    public Vector2 look;
+    public bool jump;
+    public bool sprint;
 
     private void Start()
     {
-        actions = GetComponent<PlayerActions>();
+        actions = gameObject.GetComponent<PlayerActions>();
     }
 
     public void OnMove(InputAction.CallbackContext value)
     {
-        actions.UpdateMovementInput(value.ReadValue<Vector2>());
+        MoveInput(value.ReadValue<Vector2>());
     }
 
     public void OnLook(InputAction.CallbackContext value)
-    { 
-        actions.UpdateRotationInput(value.ReadValue<Vector2>());
+    {
+        LookInput(value.ReadValue<Vector2>());
     }
 
     public void OnJump(InputAction.CallbackContext value)
     {
-        actions.DoJump();
+        JumpInput(value.performed);
     }
 
     public void OnMainAction(InputAction.CallbackContext value)
@@ -33,6 +38,40 @@ public class InputHandler : MonoBehaviour
     public void OnSecondaryAction(InputAction.CallbackContext value)
     { 
         
+    }
+
+    public void OnSprint(InputAction.CallbackContext value)
+    {
+        SprintInput(value.performed);
+    }
+
+
+
+    public void MoveInput(Vector2 input)
+    { 
+        move = input;
+        if (actions.enabled) actions.UpdateMovementInput(move);
+    }
+
+    public void LookInput(Vector2 input)
+    { 
+        look = input;
+        if (actions.enabled) actions.UpdateRotationInput(look);
+    }
+
+    public void JumpInput(bool input)
+    { 
+        jump = input;
+        if (jump && actions.enabled)
+        {
+            actions.DoJump();
+        }
+    }
+
+    public void SprintInput(bool input)
+    { 
+        sprint = input;
+        if (actions.enabled) actions.IsSprinting(sprint);
     }
 
 }
