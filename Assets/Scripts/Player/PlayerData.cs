@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
+    public float Health { get => health; }
+
+    private float health;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,4 +18,10 @@ public class PlayerData : MonoBehaviour
     {
         
     }
+    public void TakeDamage(float amount)
+    {
+        health -= amount;
+    }
+
+
 }
