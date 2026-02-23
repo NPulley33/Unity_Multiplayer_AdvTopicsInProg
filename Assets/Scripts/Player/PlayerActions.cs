@@ -53,7 +53,6 @@ public class PlayerActions : MonoBehaviour
 
     public void UpdateMovementInput(Vector2 input)
     {
-        Debug.Log($"movement: {input}");
         movement = new Vector3(input.x, 0, input.y);
     }
 
@@ -76,7 +75,6 @@ public class PlayerActions : MonoBehaviour
 
     public void UpdateRotationInput(Vector2 input)
     {
-        Debug.Log($"rotation: {input}");
         rotation = input;   
     }
 }
