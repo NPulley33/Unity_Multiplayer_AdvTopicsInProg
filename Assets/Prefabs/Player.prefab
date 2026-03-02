@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1640759142284545203}
   - component: {fileID: 1956544693507291214}
   - component: {fileID: 7119539985456561453}
+  - component: {fileID: 6595742110079525960}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -160,6 +161,7 @@ MonoBehaviour:
   lookSpeed: 12
   jumpHeight: 1
   gravity: -9.81
+  projectilePrefab: {fileID: 7576697008440379602, guid: 65d6daa35f96e7c4c95601204a4eae06, type: 3}
 --- !u!114 &1197953590028305817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions: {fileID: 8084228513892571265}
+  move: {x: 0, y: 0}
+  look: {x: 0, y: 0}
+  jump: 0
+  sprint: 0
+  mainAction: 0
+  secondAction: 0
 --- !u!114 &1753540228067766928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +394,21 @@ MonoBehaviour:
   inputHandler: {fileID: 1197953590028305817}
   playerInput: {fileID: 1753540228067766928}
   playerActions: {fileID: 8084228513892571265}
+--- !u!114 &6595742110079525960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435037438355687512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb7fa2758bce4341a50d1ace7973ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  Default: {fileID: 2100000, guid: 2b6760ab70d074d45bab9072b6f1ee3f, type: 2}
+  Damaged: {fileID: 2100000, guid: 42a5ee9e1a503cb4f800d145391067c6, type: 2}
 --- !u!1 &7816638553033024433
 GameObject:
   m_ObjectHideFlags: 0

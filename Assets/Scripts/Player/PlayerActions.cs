@@ -18,6 +18,7 @@ public class PlayerActions : MonoBehaviour
 
     private bool isSprinting;
 
+    public GameObject projectilePrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -76,5 +77,12 @@ public class PlayerActions : MonoBehaviour
     public void UpdateRotationInput(Vector2 input)
     {
         rotation = input;   
+    }
+
+    public void ExecuteMainAction()
+    {
+        //GameObject projectile = Instantiate(projectilePrefab);
+        //projectile.transform.position = this.transform.position + this.transform.forward; //add forward just to super prevent collision issues
+        //projectile.transform.rotation = this.transform.rotation;
     }
 }

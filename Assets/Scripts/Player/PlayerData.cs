@@ -1,16 +1,24 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
     public float Health { get => health; }
-
     private float health;
+    [SerializeField] private float maxHealth = 100f;
+
+    public bool Dead { get; private set; }
+
+    //temp materials to show damage states with characters
+    public Material Default;
+    public Material Damaged;
+    private Renderer renderer;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        
+        health = maxHealth;
+        renderer = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -21,7 +29,16 @@ public class PlayerData : MonoBehaviour
     public void TakeDamage(float amount)
     {
         health -= amount;
+        StartCoroutine(ShowDamage());
+
+        if (health <= 0) Dead = true;
     }
 
+    private IEnumerator ShowDamage()
+    {
+        renderer.material = Damaged;
+        yield return new WaitForSeconds(1f);
+        renderer.material = Default;
+    }
 
 }

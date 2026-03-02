@@ -9,6 +9,8 @@ public class InputHandler : MonoBehaviour
     public Vector2 look;
     public bool jump;
     public bool sprint;
+    public bool mainAction;
+    public bool secondAction;
 
     private void Start()
     {
@@ -31,8 +33,8 @@ public class InputHandler : MonoBehaviour
     }
 
     public void OnMainAction(InputAction.CallbackContext value)
-    { 
-        
+    {
+        MainActionInput(value.performed);
     }
 
     public void OnSecondaryAction(InputAction.CallbackContext value)
@@ -72,6 +74,12 @@ public class InputHandler : MonoBehaviour
     { 
         sprint = input;
         if (actions.enabled) actions.IsSprinting(sprint);
+    }
+
+    public void MainActionInput(bool input)
+    { 
+        mainAction = input;
+        if (actions.enabled && mainAction) actions.ExecuteMainAction();
     }
 
 }
