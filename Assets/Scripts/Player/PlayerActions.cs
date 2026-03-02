@@ -17,6 +17,7 @@ public class PlayerActions : MonoBehaviour
     private float xRotation;
 
     private bool isSprinting;
+    private bool escapeToggled;
 
     public GameObject projectilePrefab;
 
@@ -84,5 +85,11 @@ public class PlayerActions : MonoBehaviour
         //GameObject projectile = Instantiate(projectilePrefab);
         //projectile.transform.position = this.transform.position + this.transform.forward; //add forward just to super prevent collision issues
         //projectile.transform.rotation = this.transform.rotation;
+    }
+
+    public void Excape()
+    {
+        escapeToggled = !escapeToggled;
+        if(escapeToggled) Cursor.lockState = CursorLockMode.Locked;
     }
 }

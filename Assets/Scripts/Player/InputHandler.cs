@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
     public bool sprint;
     public bool mainAction;
     public bool secondAction;
+    public bool escape;
 
     private void Start()
     {
@@ -47,6 +48,11 @@ public class InputHandler : MonoBehaviour
         SprintInput(value.performed);
     }
 
+    public void OnExcape(InputAction.CallbackContext value)
+    { 
+        EscapeInput(value.performed);
+    }
+
 
 
     public void MoveInput(Vector2 input)
@@ -80,6 +86,11 @@ public class InputHandler : MonoBehaviour
     { 
         mainAction = input;
         if (actions.enabled && mainAction) actions.ExecuteMainAction();
+    }
+
+    public void EscapeInput(bool input)
+    {
+        escape = input;
     }
 
 }

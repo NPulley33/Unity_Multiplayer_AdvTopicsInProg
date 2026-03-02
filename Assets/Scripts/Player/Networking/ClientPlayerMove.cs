@@ -43,19 +43,22 @@ public class ClientPlayerMove : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void UpdateInputServerRpc(Vector2 move, Vector2 look, bool jump, bool sprint, bool mainAction)
+    private void UpdateInputServerRpc(Vector2 move, Vector2 look, bool jump, bool sprint, 
+        bool mainAction, bool escape)
     {
         inputHandler.MoveInput(move);
         inputHandler.LookInput(look);
         inputHandler.JumpInput(jump);
         inputHandler.SprintInput(sprint);
         inputHandler.MainActionInput(mainAction);
+        inputHandler.EscapeInput(escape);
     }
 
     private void LateUpdate()
     {
         if (!IsOwner) return;
 
-        UpdateInputServerRpc(inputHandler.move, inputHandler.look, inputHandler.jump, inputHandler.sprint, inputHandler.mainAction);
+        UpdateInputServerRpc(inputHandler.move, inputHandler.look, inputHandler.jump, inputHandler.sprint,
+            inputHandler.mainAction, inputHandler.escape);
     }
 }
