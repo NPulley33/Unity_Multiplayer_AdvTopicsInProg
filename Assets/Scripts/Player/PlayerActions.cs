@@ -8,6 +8,7 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private float lookSpeed = 5f;
     [SerializeField] private float jumpHeight = 1f;
     [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float lookSpeedMultiplier = 1f;
 
     private CharacterController controller;
 
@@ -15,6 +16,7 @@ public class PlayerActions : MonoBehaviour
     private Vector3 movement = Vector3.zero;
     private Vector3 rotation = Vector3.zero;
     private float xRotation;
+    private Camera cam;
 
     private bool isSprinting;
     private bool escapeToggled;
@@ -25,6 +27,7 @@ public class PlayerActions : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        cam = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -63,14 +66,13 @@ public class PlayerActions : MonoBehaviour
     private void HandleRotation()
     {
         //turn player model ONLY
-        float lookX = rotation.x * lookSpeed * Time.fixedDeltaTime;
-        float lookY = rotation.y * lookSpeed * Time.fixedDeltaTime;
+        float lookX = rotation.x * lookSpeed * lookSpeedMultiplier * Time.fixedDeltaTime;
+        float lookY = rotation.y * lookSpeed * lookSpeedMultiplier * Time.fixedDeltaTime;
 
         xRotation -= lookY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        GetComponentInChildren<Camera>().transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        //this.transform.Rotate(0f, lookX, 0f);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         Quaternion deltaRotation = Quaternion.Euler(new Vector3(0f, lookX, 0f));
         this.transform.rotation *= deltaRotation;
     }
@@ -82,9 +84,9 @@ public class PlayerActions : MonoBehaviour
 
     public void ExecuteMainAction()
     {
-        //GameObject projectile = Instantiate(projectilePrefab);
-        //projectile.transform.position = this.transform.position + this.transform.forward; //add forward just to super prevent collision issues
-        //projectile.transform.rotation = this.transform.rotation;
+        GameObject projectile = Instantiate(projectilePrefab);
+        projectile.transform.position = this.transform.position + this.cam.transform.forward; //add forward just to super prevent collision issues
+        projectile.transform.rotation = this.transform.rotation;
     }
 
     public void Excape()

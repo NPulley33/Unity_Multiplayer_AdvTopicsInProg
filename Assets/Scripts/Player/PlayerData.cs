@@ -19,6 +19,7 @@ public class PlayerData : MonoBehaviour
     {
         health = maxHealth;
         renderer = GetComponent<Renderer>();
+        renderer.material = Default;
     }
 
     // Update is called once per frame
