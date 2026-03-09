@@ -29,6 +29,13 @@ public class PlayerData : MonoBehaviour
     }
     public void TakeDamage(float amount)
     {
+        Debug.Log("took damage");
+        if (health <= 0)
+        {
+            FindFirstObjectByType<NetworkManagerUI>().ToggleDeathDirections(true);
+            GetComponent<PlayerActions>().ToggleMove(false);
+        }
+
         health -= amount;
         StartCoroutine(ShowDamage());
 

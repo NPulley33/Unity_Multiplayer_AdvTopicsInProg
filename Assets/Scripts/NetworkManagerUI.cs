@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class NetworkManagerUI : MonoBehaviour
 {
+    [SerializeField] private GameObject backgroundImage;
+
     [SerializeField] private Button serverButton;
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
     [SerializeField] private Button leaveSessionButton;
+    //[SerializeField] private Button RespawnButton;
 
     [SerializeField] private TextMeshProUGUI pausedText;
-    [SerializeField] private GameObject backgroundImage;
+    [SerializeField] private TextMeshProUGUI youDiedText;
 
     private void Awake()
     {
@@ -25,30 +28,31 @@ public class NetworkManagerUI : MonoBehaviour
     private void OnStart()
     {
         NetworkManager.Singleton.StartServer();
-        ToggleUIButtons(true);
+        ToggleMenuButtons(true);
     }
 
     private void OnHost()
     {
         NetworkManager.Singleton.StartHost();
-        ToggleUIButtons(true);
+        ToggleMenuButtons(true);
     }
 
     private void OnClient()
     {
         NetworkManager.Singleton.StartClient();
-        ToggleUIButtons(true);
+        ToggleMenuButtons(true);
     }
 
     private void OnLeave()
     {
         Debug.Log("on leave clicked");
         NetworkManager.Singleton.Shutdown();
-        ToggleUIButtons(false);
+        ToggleMenuButtons(false);
         ToggleLeaveSession(false);
+        ToggleDeathDirections(false);
     }
 
-    public void ToggleUIButtons(bool started)
+    public void ToggleMenuButtons(bool started)
     { 
         serverButton.gameObject.SetActive(!started);
         hostButton.gameObject.SetActive(!started);
@@ -61,5 +65,11 @@ public class NetworkManagerUI : MonoBehaviour
     {
         leaveSessionButton.gameObject.SetActive(toggled);
         pausedText.gameObject.SetActive(toggled);
+    }
+
+    public void ToggleDeathDirections(bool toggled)
+    {
+        leaveSessionButton.gameObject.SetActive(toggled);
+        youDiedText.gameObject.SetActive(toggled);
     }
 }

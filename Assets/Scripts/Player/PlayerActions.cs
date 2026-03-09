@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -25,6 +26,13 @@ public class PlayerActions : MonoBehaviour
     private bool canMove = true;
 
     public GameObject projectilePrefab;
+    /// <summary>
+    /// time to shoot a projectile (actual 1/shootTime)
+    /// </summary>
+    [SerializeField] private float shootTime = 4f;
+    private float nextTimeToFire;
+    [SerializeField] private bool canFire;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,6 +47,11 @@ public class PlayerActions : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
+
+        if (Time.time > nextTimeToFire)
+        {
+            canFire = true;
+        }
     }
 
     private void HandleMovement()
@@ -87,10 +100,15 @@ public class PlayerActions : MonoBehaviour
 
     public void ExecuteMainAction()
     {
+        if (!canFire) return;
+
         GameObject projectile = Instantiate(projectilePrefab);
         projectile.transform.position = this.cam.transform.position + this.transform.forward; //add forward just to super prevent collision issues
         projectile.transform.rotation = this.cam.transform.rotation;
         projectile.GetComponent<NetworkObject>().Spawn(true);
+
+        canFire = false;
+        nextTimeToFire = Time.time + 1/shootTime;
     }
 
     public void Escape()
@@ -106,4 +124,7 @@ public class PlayerActions : MonoBehaviour
         
         FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
     }
+
+    public void ToggleMove(bool canMove) => this.canMove = canMove;
+    //TODO add toggle cursor for death
 }
