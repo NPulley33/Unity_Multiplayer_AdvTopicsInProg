@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ public class PlayerActions : MonoBehaviour
 
     private bool isSprinting;
     private bool escapeToggled;
+    private bool canMove = true;
 
     public GameObject projectilePrefab;
 
@@ -91,9 +93,17 @@ public class PlayerActions : MonoBehaviour
         projectile.GetComponent<NetworkObject>().Spawn(true);
     }
 
-    public void Excape()
+    public void Escape()
     {
+        Debug.Log("reached");
+
         escapeToggled = !escapeToggled;
-        if(escapeToggled) Cursor.lockState = CursorLockMode.Locked;
+        if (escapeToggled)
+        { 
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else Cursor.lockState = CursorLockMode.Locked;
+        
+        FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
     }
 }

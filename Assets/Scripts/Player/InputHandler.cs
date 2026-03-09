@@ -48,9 +48,9 @@ public class InputHandler : MonoBehaviour
         SprintInput(value.performed);
     }
 
-    public void OnExcape(InputAction.CallbackContext value)
+    public void OnEscape(InputAction.CallbackContext value)
     { 
-        EscapeInput(value.performed);
+        EscapeInput(value.started);
     }
 
 
@@ -91,6 +91,7 @@ public class InputHandler : MonoBehaviour
     public void EscapeInput(bool input)
     {
         escape = input;
+        if (actions.enabled && escape) actions.Escape();
     }
 
 }

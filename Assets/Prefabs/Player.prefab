@@ -304,6 +304,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 047543ea-7b56-479b-b70a-df86f9672ff3
     m_ActionName: 'Player/Sprint[/Keyboard/shift]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1197953590028305817}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnEscape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 331b8412-ebfc-44eb-a877-dfd2bda818f3
+    m_ActionName: 'Player/Pause[/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -408,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb7fa2758bce4341a50d1ace7973ebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 100
   Default: {fileID: 2100000, guid: 2b6760ab70d074d45bab9072b6f1ee3f, type: 2}
   Damaged: {fileID: 2100000, guid: 42a5ee9e1a503cb4f800d145391067c6, type: 2}

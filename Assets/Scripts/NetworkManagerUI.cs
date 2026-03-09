@@ -1,14 +1,17 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class NetworkManagerUI : MonoBehaviour
 {
-
     [SerializeField] private Button serverButton;
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
     [SerializeField] private Button leaveSessionButton;
+
+    [SerializeField] private TextMeshProUGUI pausedText;
+    [SerializeField] private GameObject backgroundImage;
 
     private void Awake()
     {
@@ -42,6 +45,7 @@ public class NetworkManagerUI : MonoBehaviour
         Debug.Log("on leave clicked");
         NetworkManager.Singleton.Shutdown();
         ToggleUIButtons(false);
+        ToggleLeaveSession(false);
     }
 
     public void ToggleUIButtons(bool started)
@@ -49,6 +53,13 @@ public class NetworkManagerUI : MonoBehaviour
         serverButton.gameObject.SetActive(!started);
         hostButton.gameObject.SetActive(!started);
         clientButton.gameObject.SetActive(!started);
-        leaveSessionButton.gameObject.SetActive(started);
+        backgroundImage.SetActive(!started);
+        //leaveSessionButton.gameObject.SetActive(started);
+    }
+
+    public void ToggleLeaveSession(bool toggled)
+    {
+        leaveSessionButton.gameObject.SetActive(toggled);
+        pausedText.gameObject.SetActive(toggled);
     }
 }
