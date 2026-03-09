@@ -6,7 +6,6 @@ public class Projectile : MonoBehaviour
     /// speed of projectile
     /// </summary>
     [SerializeField] private float speed;
-    private Vector3 target;
     /// <summary>
     /// Prevents a double hit issue where it would damage the player twice
     /// </summary>
@@ -17,24 +16,18 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         Destroy(this.gameObject, 5f);
-        if (target != null) transform.LookAt(target);
     }
 
     private void FixedUpdate()
     {
-        if (target != null)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-
-        }
-        else transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (transform.parent is not null && !hitSomething)
+            if (!hitSomething)
             {
                 hitSomething = true; //prevents double hit issue
                 other.GetComponent<PlayerData>().TakeDamage(damage);
