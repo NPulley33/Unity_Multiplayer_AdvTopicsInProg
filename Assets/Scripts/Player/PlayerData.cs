@@ -32,14 +32,19 @@ public class PlayerData : MonoBehaviour
         Debug.Log("took damage");
         if (health <= 0)
         {
-            FindFirstObjectByType<NetworkManagerUI>().ToggleDeathDirections(true);
-            GetComponent<PlayerActions>().ToggleMove(false);
+            OnDeath();
         }
 
         health -= amount;
         StartCoroutine(ShowDamage());
 
         if (health <= 0) Dead = true;
+    }
+
+    private void OnDeath()
+    {
+        FindFirstObjectByType<NetworkManagerUI>().ToggleDeathDirections(true);
+        GetComponent<PlayerActions>().ToggleMove(false);
     }
 
     private IEnumerator ShowDamage()

@@ -194,5 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f3b8ad9159b6547b75b8f297aab349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  ShowTopMostFoldoutHeaderGroup: 1
+  speed: 25
   damage: 20

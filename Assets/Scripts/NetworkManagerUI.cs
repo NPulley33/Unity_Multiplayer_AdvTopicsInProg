@@ -7,18 +7,16 @@ public class NetworkManagerUI : MonoBehaviour
 {
     [SerializeField] private GameObject backgroundImage;
 
-    [SerializeField] private Button serverButton;
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
     [SerializeField] private Button leaveSessionButton;
     //[SerializeField] private Button RespawnButton;
 
-    [SerializeField] private TextMeshProUGUI pausedText;
-    [SerializeField] private TextMeshProUGUI youDiedText;
+    [SerializeField] private GameObject PauseMenu;
+    [SerializeField] private GameObject DeathScreen;
 
     private void Awake()
     {
-        serverButton.onClick.AddListener(OnStart);
         hostButton.onClick.AddListener(OnHost);
         clientButton.onClick.AddListener(OnClient);
         leaveSessionButton.onClick.AddListener(OnLeave);
@@ -54,7 +52,6 @@ public class NetworkManagerUI : MonoBehaviour
 
     public void ToggleMenuButtons(bool started)
     { 
-        serverButton.gameObject.SetActive(!started);
         hostButton.gameObject.SetActive(!started);
         clientButton.gameObject.SetActive(!started);
         backgroundImage.SetActive(!started);
@@ -64,12 +61,12 @@ public class NetworkManagerUI : MonoBehaviour
     public void ToggleLeaveSession(bool toggled)
     {
         leaveSessionButton.gameObject.SetActive(toggled);
-        pausedText.gameObject.SetActive(toggled);
+        PauseMenu.SetActive(toggled);
     }
 
     public void ToggleDeathDirections(bool toggled)
     {
         leaveSessionButton.gameObject.SetActive(toggled);
-        youDiedText.gameObject.SetActive(toggled);
+        DeathScreen.SetActive(toggled);
     }
 }

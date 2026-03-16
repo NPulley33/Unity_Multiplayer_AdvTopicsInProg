@@ -56,11 +56,17 @@ public class PlayerActions : MonoBehaviour
 
     private void HandleMovement()
     {
+        //keep falling even if player can't move
         velocity.y += gravity * Time.deltaTime;
+        Vector3 moveDirection = Vector3.zero;
 
-        //apply movement based on current player rotation
-        Vector3 moveDirection = (transform.forward * movement.z) + (transform.right * movement.x);
-        if (isSprinting) moveDirection *= speedMultiplyer;
+        if (canMove)
+        { 
+            //apply movement based on current player rotation
+            moveDirection = (transform.forward * movement.z) + (transform.right * movement.x);
+            if (isSprinting) moveDirection *= speedMultiplyer;
+        }
+
         controller.Move(((moveDirection * moveSpeed) + velocity) * Time.deltaTime);
     }
 
@@ -81,6 +87,8 @@ public class PlayerActions : MonoBehaviour
 
     private void HandleRotation()
     {
+        if (!canMove) return;
+
         //turn player model ONLY
         float lookX = rotation.x * lookSpeed * lookSpeedMultiplier * Time.fixedDeltaTime;
         float lookY = rotation.y * lookSpeed * lookSpeedMultiplier * Time.fixedDeltaTime;
@@ -100,7 +108,7 @@ public class PlayerActions : MonoBehaviour
 
     public void ExecuteMainAction()
     {
-        if (!canFire) return;
+        if (!canFire || !canMove) return;
 
         GameObject projectile = Instantiate(projectilePrefab);
         projectile.transform.position = this.cam.transform.position + this.transform.forward; //add forward just to super prevent collision issues
@@ -117,10 +125,15 @@ public class PlayerActions : MonoBehaviour
 
         escapeToggled = !escapeToggled;
         if (escapeToggled)
-        { 
+        {
             Cursor.lockState = CursorLockMode.None;
+            ToggleMove(false);
         }
-        else Cursor.lockState = CursorLockMode.Locked;
+        else
+        { 
+            Cursor.lockState = CursorLockMode.Locked;
+            ToggleMove(true);
+        }
         
         FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
     }

@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
     /// <summary>
     /// speed of projectile
@@ -34,11 +35,19 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject);
+        DestroyThisServerRpc();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy(this.gameObject);
+        DestroyThisServerRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DestroyThisServerRpc()
+    {
+        this.GetComponent<NetworkObject>().Despawn();
+        this.OnNetworkDespawn();
+        this.OnDestroy();
     }
 }
