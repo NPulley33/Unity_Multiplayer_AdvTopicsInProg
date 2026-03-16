@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerActions : MonoBehaviour
 {
+    private PlayerData playerData;
+
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float speedMultiplyer = 1.5f;
     [SerializeField] private float lookSpeed = 5f;
@@ -37,6 +39,7 @@ public class PlayerActions : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerData = GetComponent<PlayerData>();
         controller = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,19 +63,19 @@ public class PlayerActions : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         Vector3 moveDirection = Vector3.zero;
 
-        if (canMove)
+        if (canMove && !playerData.Dead)
         { 
             //apply movement based on current player rotation
             moveDirection = (transform.forward * movement.z) + (transform.right * movement.x);
             if (isSprinting) moveDirection *= speedMultiplyer;
         }
 
-        controller.Move(((moveDirection * moveSpeed) + velocity) * Time.deltaTime);
+        if(controller.enabled) controller.Move(((moveDirection * moveSpeed) + velocity) * Time.deltaTime);
     }
 
     public void DoJump()
     {
-        if (controller.isGrounded)
+        if (controller.isGrounded && canMove && !playerData.Dead)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -3f * gravity);
         }
@@ -87,7 +90,7 @@ public class PlayerActions : MonoBehaviour
 
     private void HandleRotation()
     {
-        if (!canMove) return;
+        if (!canMove || playerData.Dead) return;
 
         //turn player model ONLY
         float lookX = rotation.x * lookSpeed * lookSpeedMultiplier * Time.fixedDeltaTime;
@@ -126,18 +129,35 @@ public class PlayerActions : MonoBehaviour
         escapeToggled = !escapeToggled;
         if (escapeToggled)
         {
-            Cursor.lockState = CursorLockMode.None;
+            ToggleCursor(false);
             ToggleMove(false);
         }
         else
-        { 
-            Cursor.lockState = CursorLockMode.Locked;
+        {
+            ToggleCursor(true);
             ToggleMove(true);
         }
         
-        FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
+        //stop using get component if this script needs to reference player data more than once
+        if(!playerData.Dead) FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
     }
 
     public void ToggleMove(bool canMove) => this.canMove = canMove;
+
+    /// <summary>
+    /// toggles cursor lock state. true means player can look (cursor locked), false unlocks cursor.
+    /// </summary>
+    /// <param name="canLook"></param>
+    public void ToggleCursor(bool canLook)
+    {
+        if (canLook)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else 
+        { 
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
     //TODO add toggle cursor for death
 }

@@ -27,24 +27,28 @@ public class PlayerData : MonoBehaviour
     {
         
     }
+
     public void TakeDamage(float amount)
     {
-        Debug.Log("took damage");
+        health -= amount;
+
         if (health <= 0)
         {
+            Dead = true;
             OnDeath();
         }
 
-        health -= amount;
         StartCoroutine(ShowDamage());
-
-        if (health <= 0) Dead = true;
     }
 
     private void OnDeath()
     {
         FindFirstObjectByType<NetworkManagerUI>().ToggleDeathDirections(true);
         GetComponent<PlayerActions>().ToggleMove(false);
+
+        GetComponent <MeshRenderer>().enabled = false;
+        GetComponent <CapsuleCollider>().enabled = false;
+        GetComponent <CharacterController>().enabled = false;
     }
 
     private IEnumerator ShowDamage()
