@@ -12,16 +12,19 @@ public class Projectile : NetworkBehaviour
     /// </summary>
     private bool hitSomething;
     [SerializeField] private float damage = 20f;
+    [SerializeField] private float destroyAfter = 5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Destroy(this.gameObject, 5f);
     }
 
     private void FixedUpdate()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        destroyAfter -= Time.fixedDeltaTime;
+
+        if (destroyAfter <= 0) DestroyThisServerRpc();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,6 +35,7 @@ public class Projectile : NetworkBehaviour
             {
                 hitSomething = true; //prevents double hit issue
                 other.GetComponent<PlayerData>().TakeDamage(damage);
+                Debug.Log("hit player");
             }
         }
 
@@ -47,7 +51,7 @@ public class Projectile : NetworkBehaviour
     private void DestroyThisServerRpc()
     {
         this.GetComponent<NetworkObject>().Despawn();
-        this.OnNetworkDespawn();
-        this.OnDestroy();
+        //this.OnNetworkDespawn();
+        //this.OnDestroy();
     }
 }

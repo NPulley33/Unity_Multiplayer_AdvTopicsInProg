@@ -1,6 +1,5 @@
 using System;
 using Unity.Netcode;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -137,7 +136,7 @@ public class PlayerActions : MonoBehaviour
             ToggleCursor(true);
             ToggleMove(true);
         }
-        
+
         //stop using get component if this script needs to reference player data more than once
         if(!playerData.Dead) FindFirstObjectByType<NetworkManagerUI>().ToggleLeaveSession(escapeToggled);
     }

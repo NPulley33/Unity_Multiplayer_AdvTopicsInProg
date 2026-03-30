@@ -1,7 +1,8 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : NetworkBehaviour
 {
     public float Health { get => health; }
     [SerializeField] private float health;
@@ -30,6 +31,10 @@ public class PlayerData : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        //prevents issue where if owner dies client could damage self through owner
+        //TODO if not owner && owner is dead
+        if (!IsOwner) return;
+
         health -= amount;
 
         if (health <= 0)
@@ -53,9 +58,22 @@ public class PlayerData : MonoBehaviour
 
     private IEnumerator ShowDamage()
     {
-        renderer.material = Damaged;
-        yield return new WaitForSeconds(1f);
-        renderer.material = Default;
+        //renderer.material = Damaged;
+        UpdateDamagedMaterialRpc();
+        yield return new WaitForSeconds(0.5f);
+        //renderer.material = Default;
+        UpdateDefaultMaterialRpc();
     }
 
+    [Rpc(SendTo.Server)]
+    private void UpdateDamagedMaterialRpc()
+    { 
+        this.renderer.material = Damaged;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateDefaultMaterialRpc()
+    {
+        this.renderer.material = Default;
+    }
 }
